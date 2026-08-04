@@ -1,0 +1,32 @@
+/* Pure CSS custom styles */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #faf8f5;
+  color: #180c07;
+}
+
+/* Warm Wood Grain Dark Themes & Backdrop Overrides */
+.bg-black\/60 {
+  background-color: rgba(24, 12, 7, 0.75) !important;
+}
+
+.bg-black {
+  background-color: #180c07 !important;
+}
+
+/* Ensure smooth transitions for dark mode toggles */
+.dark body {
+  background-color: #180c07;
+  color: #f7eeea;
+}
+
+

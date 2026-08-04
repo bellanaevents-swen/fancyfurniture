@@ -1,0 +1,10 @@
+{
+  "name": "Fancy Furniture",
+  "description": "A high-performance luxury furniture shop featuring AR room visualizer, instant checkout, real-time sync, delivery tracking, and loyalty rewards.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

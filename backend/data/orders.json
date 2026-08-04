@@ -1,0 +1,22 @@
+[
+  {
+    "id": "FF-892104",
+    "customer": {
+      "fullName": "Andrei Popescu",
+      "phone": "+40 712 345 678",
+      "city": "Odorheiu Secuiesc",
+      "shippingMethod": "Home Delivery"
+    },
+    "items": [
+      {
+        "productId": "prod_bukk_chair",
+        "name": "Nordic Ash Dining Chair 'Bükk'",
+        "quantity": 2,
+        "priceRON": 480
+      }
+    ],
+    "totalRON": 960,
+    "status": "Delivered",
+    "createdAt": "2026-07-28T14:20:00.000Z"
+  }
+]

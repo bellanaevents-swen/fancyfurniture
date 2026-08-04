@@ -1,0 +1,326 @@
+[
+  {
+    "id": "prod_tarnava_table",
+    "name": {
+      "en": "Solid Oak Dining Table 'Târnava'",
+      "ro": "Masă din Stejar Masiv 'Târnava'",
+      "hu": "Târnava Tömör Tölgyfa Étkezőasztal"
+    },
+    "description": {
+      "en": "Handcrafted from local sustainable solid oak, reflecting the centuries-old carpentry tradition of Harghita county. Seats up to 8 guests comfortably.",
+      "ro": "Realizată manual din stejar masiv local, reflectând tradiția seculară a tâmplăriei din județul Harghita. Găzduiește confortabil până la 8 persoane.",
+      "hu": "Helyi, fenntartható tölgyfából kézzel készített étkezőasztal, amely a Hargita megyei asztalosmesterség évszázados hagyományait tükrözi. Akár 8 személynek is kényelmes."
+    },
+    "priceRON": 3850,
+    "category": "Tables",
+    "image": "https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "table",
+    "dimensions": "220 x 90 x 76 cm",
+    "material": {
+      "en": "Solid Transylvanian Oak",
+      "ro": "Stejar Masiv Transilvănean",
+      "hu": "Erdélyi Tömör Tölgyfa"
+    },
+    "stock": 5,
+    "rating": 4.9,
+    "reviewsCount": 12,
+    "pointsEarned": 385
+  },
+  {
+    "id": "prod_bukk_chair",
+    "name": {
+      "en": "Nordic Ash Dining Chair 'Bükk'",
+      "ro": "Scaun din Frasin Nordic 'Bükk'",
+      "hu": "Bükk Skandináv Kőrisfa Szék"
+    },
+    "description": {
+      "en": "A minimalist, ergonomic dining chair sculpted from native ash wood. Feature a premium woven organic cord seat for ultimate comfort.",
+      "ro": "Un scaun minimalist și ergonomic sculptat din lemn de frasin autohton. Dispune de o șezut din șnur organic împletit premium pentru confort maxim.",
+      "hu": "Helyi kőrisfából faragott minimalista, ergonomikus szék. Prémium fonott organikus kötél ülőfelülettel a maximális kényelemért."
+    },
+    "priceRON": 480,
+    "category": "Chairs",
+    "image": "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "chair",
+    "dimensions": "45 x 48 x 82 cm",
+    "material": {
+      "en": "Native Ash & Woven Cord",
+      "ro": "Frasin Autohton și Șnur Împletit",
+      "hu": "Kőrisfa és Fonott Kötél"
+    },
+    "stock": 24,
+    "rating": 4.7,
+    "reviewsCount": 8,
+    "pointsEarned": 48
+  },
+  {
+    "id": "prod_secuiesc_sofa",
+    "name": {
+      "en": "Royal Velvet Lounge Sofa 'Secuiesc'",
+      "ro": "Canapea din Catifea Regală 'Secuiesc'",
+      "hu": "Secuiesc Királyi Bársony Kanapé"
+    },
+    "description": {
+      "en": "Immersive deep-seated lounge sofa upholstered in plush, high-resilience velvet. Supported by deep-colored solid walnut legs.",
+      "ro": "Canapea spațioasă tapițată în catifea fină de înaltă rezistență. Susținută de picioare elegante din nuc masiv cu nuanțe profunde.",
+      "hu": "Mély ülésű, kényelmes kanapé plüss, nagy rugalmasságú bársony kárpitozással. Elegáns tömör diófa lábakkal alátámasztva."
+    },
+    "priceRON": 6200,
+    "category": "Sofas",
+    "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "sofa",
+    "dimensions": "240 x 100 x 85 cm",
+    "material": {
+      "en": "Royal Velvet & Solid Walnut",
+      "ro": "Catifea Regală și Nuc Masiv",
+      "hu": "Királyi Bársony és Tömör Diófa"
+    },
+    "stock": 3,
+    "rating": 5,
+    "reviewsCount": 15,
+    "pointsEarned": 620
+  },
+  {
+    "id": "prod_hargita_sideboard",
+    "name": {
+      "en": "Transylvanian Pine Sideboard 'Hargita'",
+      "ro": "Comodă din Pin Transilvănean 'Hargita'",
+      "hu": "Hargita Erdélyi Fenyőfa Tálalószekrény"
+    },
+    "description": {
+      "en": "Featuring traditional wood joinery and brass hardware, this pine sideboard offers spacious modern storage with a rustic, historical charm.",
+      "ro": "Având îmbinări tradiționale din lemn și feronerie din alamă, această comodă din pin oferă depozitare modernă și spațioasă cu un farmec rustic istoric.",
+      "hu": "Hagyományos fa csapolásokkal és sárgaréz vasalatokkal készült fenyőfa tálaló, amely tágas, modern tárolást biztosít rusztikus, történelmi bájjal."
+    },
+    "priceRON": 2100,
+    "category": "Cabinets",
+    "image": "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "cabinet",
+    "dimensions": "160 x 45 x 85 cm",
+    "material": {
+      "en": "Aged Transylvanian Pine",
+      "ro": "Pin Transilvănean Învechit",
+      "hu": "Érlelt Erdélyi Fenyőfa"
+    },
+    "stock": 8,
+    "rating": 4.8,
+    "reviewsCount": 6,
+    "pointsEarned": 210
+  },
+  {
+    "id": "prod_boema_bed",
+    "name": {
+      "en": "Transylvanian Walnut Bed 'Boema'",
+      "ro": "Pat din Nuc Transilvănean 'Boema'",
+      "hu": "Boema Erdélyi Diófa Ágy"
+    },
+    "description": {
+      "en": "Elegantly framed with hand-finished solid walnut and upholstered headboard in woven linen. Designed for ultimate rest and royal aesthetics.",
+      "ro": "Cadru elegant din nuc masiv finisat manual, cu tăblie tapițată în in natural. Conceput pentru un somn odihnitor și o estetică regală.",
+      "hu": "Kézzel megmunkált tömör diófa keret, vászon kárpitozású fejvéggel. A pihentető alvásért és a királyi eleganciáért."
+    },
+    "priceRON": 4900,
+    "category": "Beds",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "sofa",
+    "dimensions": "200 x 180 x 120 cm",
+    "material": {
+      "en": "Solid Walnut & Woven Linen",
+      "ro": "Nuc Masiv și In Țesut",
+      "hu": "Tömör Diófa és Vászon"
+    },
+    "stock": 4,
+    "rating": 4.9,
+    "reviewsCount": 10,
+    "pointsEarned": 490
+  },
+  {
+    "id": "prod_ciucas_coffeetable",
+    "name": {
+      "en": "Solid Walnut Coffee Table 'Ciucaș'",
+      "ro": "Măsuță de Cafea din Nuc Masiv 'Ciucaș'",
+      "hu": "Ciucaș Tömör Diófa Dohányzóasztal"
+    },
+    "description": {
+      "en": "Organic shape coffee table carved from a single slab of solid Transylvanian walnut with matte brass inlay detailing.",
+      "ro": "Măsuță de cafea cu formă organică sculptată dintr-o singură placă de nuc masiv transilvănean, cu detalii din alamă mată.",
+      "hu": "Organikus formájú dohányzóasztal egyetlen tömör erdélyi diófa lapból faragva, matt sárgaréz betétekkel."
+    },
+    "priceRON": 1650,
+    "category": "Tables",
+    "image": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "table",
+    "dimensions": "120 x 70 x 42 cm",
+    "material": {
+      "en": "Solid Walnut & Matte Brass",
+      "ro": "Nuc Masiv și Alamă Mată",
+      "hu": "Tömör Diófa és Matt Sárgaréz"
+    },
+    "stock": 9,
+    "rating": 4.8,
+    "reviewsCount": 14,
+    "pointsEarned": 165
+  },
+  {
+    "id": "prod_mures_armchair",
+    "name": {
+      "en": "Sculpted Lounge Armchair 'Mureș'",
+      "ro": "Fotoliu Sculptat 'Mureș'",
+      "hu": "Mureș Faragott Pihenőfotel"
+    },
+    "description": {
+      "en": "Ergonomic lounge chair featuring a steam-bent oak frame and premium textured bouclé upholstery.",
+      "ro": "Fotoliu ergonomic cu cadru din stejar curbat la abur și tapițerie textilă bouclé de calitate superioară.",
+      "hu": "Ergonomikus pihenőfotel gőzölt hajlított tölgyfa kerettel és prémium bouclé kárpitozással."
+    },
+    "priceRON": 2450,
+    "category": "Armchairs",
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "chair",
+    "dimensions": "82 x 88 x 78 cm",
+    "material": {
+      "en": "Curved Oak & Textured Bouclé",
+      "ro": "Stejar Curbat și Țesătură Bouclé",
+      "hu": "Hajlított Tölgy és Bouclé"
+    },
+    "stock": 7,
+    "rating": 4.9,
+    "reviewsCount": 11,
+    "pointsEarned": 245
+  },
+  {
+    "id": "prod_olt_pendant",
+    "name": {
+      "en": "Minimalist Brass Pendant Light 'Olt'",
+      "ro": "Lustră Suspendată din Alamă 'Olt'",
+      "hu": "Olt Minimalista Sárgaréz Függeszték"
+    },
+    "description": {
+      "en": "Hand-spun brushed brass dome pendant providing warm ambient illumination for dining spaces and kitchen islands.",
+      "ro": "Lustră suspendată din alamă periată prelucrată manual, oferind o iluminare caldă și primitoare pentru zonele de dining.",
+      "hu": "Kézzel megmunkált szálcsiszolt sárgaréz függeszték, meleg hangulatvilágítással az étkezőasztal fölé."
+    },
+    "priceRON": 890,
+    "category": "Lighting",
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "cabinet",
+    "dimensions": "45 x 45 x 120 cm",
+    "material": {
+      "en": "Brushed Brass & Ceramic",
+      "ro": "Alamă Periată și Ceramică",
+      "hu": "Szálcsiszolt Sárgaréz"
+    },
+    "stock": 15,
+    "rating": 4.7,
+    "reviewsCount": 9,
+    "pointsEarned": 89
+  },
+  {
+    "id": "prod_covasna_corner_sofa",
+    "name": {
+      "en": "Italian Leather Corner Sofa 'Covasna'",
+      "ro": "Canapea de Colț din Piele Italiană 'Covasna'",
+      "hu": "Covasna Olasz Bőrgarnitúra"
+    },
+    "description": {
+      "en": "Generous modular L-shape corner sofa upholstered in top-grain cognac Italian leather with reinforced oak structure.",
+      "ro": "Canapea de colț modulară spațioasă, tapițată în piele naturală italiană de culoare coniac, cu structură din stejar.",
+      "hu": "Tágas moduláris L-alakú sarokkanapé prémium konyakbarna olasz bőrből, megerősített tölgyfa szerkezettel."
+    },
+    "priceRON": 8900,
+    "category": "Sofas",
+    "image": "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "sofa",
+    "dimensions": "290 x 180 x 82 cm",
+    "material": {
+      "en": "Top-Grain Italian Leather & Oak",
+      "ro": "Piele Italiană și Stejar",
+      "hu": "Olasz Bőr és Tölgyfa"
+    },
+    "stock": 2,
+    "rating": 5,
+    "reviewsCount": 18,
+    "pointsEarned": 890
+  },
+  {
+    "id": "prod_harghita_wardrobe",
+    "name": {
+      "en": "Solid Walnut Wardrobe 'Harghita Master'",
+      "ro": "Șifonier din Nuc Masiv 'Harghita Master'",
+      "hu": "Harghita Master Tömör Diófa Szekrény"
+    },
+    "description": {
+      "en": "Three-door luxury wardrobe crafted from solid walnut with soft-closing hinges and integrated LED hanging rails.",
+      "ro": "Șifonier de lux cu trei uși, creat din nuc masiv cu balamale soft-close și iluminare LED integrată.",
+      "hu": "Háromajtós luxus szekrény tömör diófából, halkan záródó pántokkal és integrált LED világítással."
+    },
+    "priceRON": 7400,
+    "category": "Cabinets",
+    "image": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "cabinet",
+    "dimensions": "210 x 180 x 65 cm",
+    "material": {
+      "en": "Solid Transylvanian Walnut",
+      "ro": "Nuc Masiv Transilvănean",
+      "hu": "Erdélyi Tömör Diófa"
+    },
+    "stock": 3,
+    "rating": 4.9,
+    "reviewsCount": 7,
+    "pointsEarned": 740
+  },
+  {
+    "id": "prod_maramures_mirror",
+    "name": {
+      "en": "Hand-carved Wooden Mirror Frame 'Maramureș'",
+      "ro": "Oglindă cu Ramă Sculptată Manual 'Maramureș'",
+      "hu": "Maramureș Kézzel Faragott Tükör"
+    },
+    "description": {
+      "en": "Accent wall mirror encircled by a traditional hand-carved geometric motif frame made of solid beech wood.",
+      "ro": "Oglindă decorativă de perete înconjurată de o ramă sculptată manual cu motive tradiționale din lemn de fag masiv.",
+      "hu": "Fali tükör hagyományos kézi faragású geometriai mintás tömör bükkfa kerettel."
+    },
+    "priceRON": 950,
+    "category": "Decor",
+    "image": "https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "cabinet",
+    "dimensions": "100 x 100 x 5 cm",
+    "material": {
+      "en": "Carved Solid Beech Wood",
+      "ro": "Fag Masiv Sculptat",
+      "hu": "Faragott Bükkfa"
+    },
+    "stock": 12,
+    "rating": 4.8,
+    "reviewsCount": 16,
+    "pointsEarned": 95
+  },
+  {
+    "id": "prod_retezat_floorlamp",
+    "name": {
+      "en": "Sculpted Oak Floor Lamp 'Retezat'",
+      "ro": "Lampadar din Stejar Sculptat 'Retezat'",
+      "hu": "Retezat Tölgyfa Állólámpa"
+    },
+    "description": {
+      "en": "Tripod floor lamp with steam-bent solid oak legs and a warm linen shade creating soft ambient evening illumination.",
+      "ro": "Lampadar trepied cu picioare din stejar masiv curbat și abajur din in, oferind o lumină caldă de seară.",
+      "hu": "Tölgyfa lábú állólámpa vászon búrával, amely kellemes meleg fényt biztosít az estéken."
+    },
+    "priceRON": 1120,
+    "category": "Lighting",
+    "image": "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=600&q=80",
+    "arOverlayType": "cabinet",
+    "dimensions": "165 x 50 x 50 cm",
+    "material": {
+      "en": "Solid Oak & Natural Linen",
+      "ro": "Stejar Masiv și In Natural",
+      "hu": "Tömör Tölgy és Vászon"
+    },
+    "stock": 10,
+    "rating": 4.9,
+    "reviewsCount": 13,
+    "pointsEarned": 112
+  }
+]

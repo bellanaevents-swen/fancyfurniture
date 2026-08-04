@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sr_odorhei",
+    "name": "Odorheiu Secuiesc Showroom",
+    "address": "Strada Beclean 14, Odorheiu Secuiesc",
+    "phone": "+40 266 218 000",
+    "distanceKm": 0,
+    "isLocal": true
+  },
+  {
+    "id": "sr_cristuru",
+    "name": "Cristuru Secuiesc Outlet",
+    "address": "Strada Libertății 42, Cristuru Secuiesc",
+    "phone": "+40 266 242 100",
+    "distanceKm": 26,
+    "isLocal": false
+  },
+  {
+    "id": "sr_sighisoara",
+    "name": "Sighișoara Boutique",
+    "address": "Strada Cetății 8, Sighișoara",
+    "phone": "+40 265 771 200",
+    "distanceKm": 48,
+    "isLocal": false
+  }
+]

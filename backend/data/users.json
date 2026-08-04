@@ -1,0 +1,18 @@
+[
+  {
+    "id": "usr_demo",
+    "name": "Andrei Popescu",
+    "email": "andrei.popescu@example.com",
+    "role": "customer",
+    "rewardPoints": 48,
+    "savedRooms": []
+  },
+  {
+    "id": "usr_admin",
+    "name": "Fancy Furniture Admin",
+    "email": "admin@fancyfurniture.ro",
+    "role": "admin",
+    "rewardPoints": 1500,
+    "savedRooms": []
+  }
+]

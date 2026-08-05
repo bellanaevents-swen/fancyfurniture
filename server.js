@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/images', express.static(path.join(process.cwd(), 'public', 'images')));
 
 // Helper to safely read JSON files from backend/data
 const readJsonFile = (filename, fallback = []) => {

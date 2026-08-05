@@ -58,7 +58,7 @@ class AppController {
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
           <!-- Logo -->
-          <button id="nav-logo" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group flex-shrink-0">
+          <div id="nav-logo" role="button" tabindex="0" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group flex-shrink-0 cursor-pointer">
             <div id="open-logo-modal-btn" title="Click to view luxury logo details" class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-md shadow-amber-900/25 group-hover:scale-105 transition-all ring-2 ring-amber-700/50 bg-stone-950 flex items-center justify-center">
               <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" referrerPolicy="no-referrer" onerror="this.onerror=null; this.src='images/logo.jpg';" />
               <div class="absolute inset-0 bg-gradient-to-tr from-amber-900/20 via-transparent to-amber-400/20 pointer-events-none"></div>
@@ -72,7 +72,7 @@ class AppController {
                 Handcrafted Collection
               </span>
             </div>
-          </button>
+          </div>
 
           <!-- Nav Tabs (Desktop lg+) -->
           <nav class="hidden lg:flex items-center gap-1 bg-stone-100 p-1.5 rounded-xl border border-stone-200 flex-shrink-0">

@@ -49,6 +49,7 @@ class Store {
     this.sortBy = 'featured'; // 'featured' | 'price-asc' | 'price-desc' | 'rating'
     this.selectedProductId = null;
     this.isCheckoutOpen = false;
+    this.isLogoModalOpen = false;
     this.isOffline = !navigator.onLine;
 
     this.notifications = [
@@ -127,6 +128,11 @@ class Store {
 
   selectProduct(productId) {
     this.selectedProductId = productId;
+    this.notify();
+  }
+
+  setLogoModalOpen(isOpen) {
+    this.isLogoModalOpen = isOpen;
     this.notify();
   }
 

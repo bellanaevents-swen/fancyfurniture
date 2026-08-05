@@ -1,6 +1,8 @@
 import { store } from './store.js';
 import { ARStudioController } from './arStudio.js';
 
+const LOGO_SVG_FALLBACK = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='32' fill='%23180c07'/><path d='M50 45 h100 v24 h-65 v28 h50 v24 h-50 v54 h-35 Z' fill='%23d97706'/><path d='M80 65 h80 v20 h-50 v20 h40 v20 h-40 v45 h-30 Z' fill='%23f59e0b' opacity='0.85'/><text x='100' y='180' text-anchor='middle' fill='%23f7eeea' font-family='Cinzel, serif' font-size='16' font-weight='bold' letter-spacing='2'>FANCY</text></svg>";
+
 class AppController {
   constructor() {
     this.root = document.getElementById('root');
@@ -57,8 +59,8 @@ class AppController {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
           <!-- Logo -->
           <button id="nav-logo" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group flex-shrink-0">
-            <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-md shadow-amber-900/25 group-hover:scale-105 transition-all ring-2 ring-amber-700/50 bg-stone-950 flex items-center justify-center">
-              <img src="images/logo.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" referrerPolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=200&q=80';" />
+            <div id="open-logo-modal-btn" title="Click to view luxury logo details" class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-md shadow-amber-900/25 group-hover:scale-105 transition-all ring-2 ring-amber-700/50 bg-stone-950 flex items-center justify-center">
+              <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" referrerPolicy="no-referrer" onerror="this.onerror=null; this.src='images/logo.jpg';" />
               <div class="absolute inset-0 bg-gradient-to-tr from-amber-900/20 via-transparent to-amber-400/20 pointer-events-none"></div>
             </div>
             <div>
@@ -247,7 +249,12 @@ class AppController {
       <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 mt-20 pt-12 pb-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           <div>
-            <div class="font-serif font-bold text-xl text-white mb-2">Fancy Furniture</div>
+            <div class="flex items-center gap-3 mb-2">
+              <div id="footer-logo-btn" title="Click to view luxury logo details" class="w-8 h-8 rounded-lg overflow-hidden ring-1 ring-amber-700/50 bg-stone-950 flex-shrink-0 cursor-pointer hover:ring-amber-500 transition-all">
+                <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='images/logo.jpg';" />
+              </div>
+              <div class="font-serif font-bold text-xl text-white">Fancy Furniture</div>
+            </div>
             <p class="text-xs text-stone-400 leading-relaxed">${t('heroSubtitle')}</p>
             <div class="mt-4 text-xs text-amber-500 font-semibold">📍 ${t('shopAddress')}</div>
           </div>
@@ -1152,6 +1159,11 @@ class AppController {
     if (this.showAuthModal) {
       this.renderAuthModal(modalContainer);
     }
+
+    // Logo Showcase Modal
+    if (store.isLogoModalOpen) {
+      this.renderLogoModal(modalContainer);
+    }
   }
 
   renderAuthModal(container) {
@@ -1849,6 +1861,67 @@ class AppController {
     }
   }
 
+  renderLogoModal(container) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in';
+    modal.innerHTML = `
+      <div class="bg-stone-900 border border-amber-800/50 rounded-3xl max-w-md w-full p-6 sm:p-8 text-stone-200 shadow-2xl relative overflow-hidden">
+        <!-- Close Button -->
+        <button id="close-logo-modal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-300 font-bold flex items-center justify-center transition-colors">
+          ✕
+        </button>
+
+        <div class="text-center mb-5">
+          <span class="inline-block text-[10px] bg-amber-900/60 text-amber-300 border border-amber-700/50 px-3 py-1 rounded-full font-mono font-bold uppercase tracking-widest mb-2">
+            Luxury Brand Emblem
+          </span>
+          <h3 class="font-serif font-bold text-2xl text-stone-100">Fancy Furniture Logo</h3>
+          <p class="text-xs text-stone-400 mt-1">Official High-Resolution Handcrafted Monogram & Crest</p>
+        </div>
+
+        <div class="relative w-full aspect-square max-w-[240px] mx-auto rounded-2xl overflow-hidden shadow-2xl ring-4 ring-amber-700/50 bg-stone-950 flex items-center justify-center mb-6 group">
+          <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture High-Res Logo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='images/logo.jpg';" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center p-3">
+            <span class="text-[11px] font-semibold text-amber-200">High-Resolution Master Asset</span>
+          </div>
+        </div>
+
+        <div class="bg-stone-950/80 border border-stone-800 rounded-xl p-3.5 mb-6 text-xs text-stone-300 space-y-2">
+          <div class="flex justify-between border-b border-stone-800/80 pb-1.5">
+            <span class="text-stone-400">File Asset:</span>
+            <span class="font-mono text-amber-400">fancy_logo_1785839799811.jpg</span>
+          </div>
+          <div class="flex justify-between border-b border-stone-800/80 pb-1.5">
+            <span class="text-stone-400">Relative Path:</span>
+            <span class="font-mono text-stone-300">images/fancy_logo_1785839799811.jpg</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-stone-400">Status:</span>
+            <span class="text-emerald-400 font-semibold flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span> Loaded & Active
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="images/fancy_logo_1785839799811.jpg" target="_blank" rel="noopener noreferrer" class="flex-1 py-3 px-4 bg-amber-700 hover:bg-amber-600 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all text-center">
+            <span>🔍</span> Open Full Image
+          </a>
+          <a href="images/fancy_logo_1785839799811.jpg" download="Fancy_Furniture_Logo.jpg" class="flex-1 py-3 px-4 bg-stone-800 hover:bg-stone-700 text-amber-200 border border-stone-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-all text-center">
+            <span>⬇️</span> Download Logo
+          </a>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(modal);
+
+    modal.querySelector('#close-logo-modal').onclick = () => store.setLogoModalOpen(false);
+    modal.onclick = (e) => {
+      if (e.target === modal) store.setLogoModalOpen(false);
+    };
+  }
+
   attachHeaderEvents() {
     // Nav tabs
     this.root.querySelectorAll('.nav-tab-btn').forEach(btn => {
@@ -1862,6 +1935,22 @@ class AppController {
     const logo = this.root.querySelector('#nav-logo');
     if (logo) {
       logo.onclick = () => store.setActiveTab('catalog');
+    }
+
+    const openLogoBtn = this.root.querySelector('#open-logo-modal-btn');
+    if (openLogoBtn) {
+      openLogoBtn.onclick = (e) => {
+        e.stopPropagation();
+        store.setLogoModalOpen(true);
+      };
+    }
+
+    const footerLogoBtn = this.root.querySelector('#footer-logo-btn');
+    if (footerLogoBtn) {
+      footerLogoBtn.onclick = (e) => {
+        e.stopPropagation();
+        store.setLogoModalOpen(true);
+      };
     }
 
     // Language selector

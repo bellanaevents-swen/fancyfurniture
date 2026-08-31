@@ -1,9 +1,15 @@
 import { INITIAL_PRODUCTS, INITIAL_REVIEWS } from './mockData.js';
 import { translations } from './translations.js';
+import { CloudinaryService } from './cloudinary.js';
+import { MongoService } from './mongoService.js';
 
 class Store {
   constructor() {
     this.listeners = [];
+    this.cloudinaryConfig = { configured: false, cloudName: null };
+    this.mongoStatus = { configured: false, connected: false };
+    this.checkCloudinary();
+    this.checkMongoStatus();
     
     // Load persisted state or defaults
     const savedProducts = localStorage.getItem('fancy_products');
@@ -47,6 +53,7 @@ class Store {
     this.selectedCategory = 'All';
     this.searchQuery = '';
     this.sortBy = 'featured'; // 'featured' | 'price-asc' | 'price-desc' | 'rating'
+    this.catalogLayout = localStorage.getItem('fancy_catalog_layout') || 'grid'; // 'grid' | 'carousel'
     this.selectedProductId = null;
     this.isCheckoutOpen = false;
     this.isLogoModalOpen = false;
@@ -126,6 +133,12 @@ class Store {
     this.notify();
   }
 
+  setCatalogLayout(layout) {
+    this.catalogLayout = layout;
+    localStorage.setItem('fancy_catalog_layout', layout);
+    this.notify();
+  }
+
   selectProduct(productId) {
     this.selectedProductId = productId;
     this.notify();
@@ -188,6 +201,92 @@ class Store {
     this.reviews.unshift(newRev);
     localStorage.setItem('fancy_reviews', JSON.stringify(this.reviews));
     this.notify();
+  }
+
+  async checkCloudinary() {
+    try {
+      const config = await CloudinaryService.getConfig();
+      if (config) {
+        this.cloudinaryConfig = config;
+        this.notify();
+      }
+    } catch (err) {
+      console.warn('Cloudinary config check error:', err);
+    }
+  }
+
+  async checkMongoStatus() {
+    try {
+      const statusRes = await MongoService.getStatus();
+      if (statusRes && statusRes.mongo) {
+        this.mongoStatus = statusRes.mongo;
+        this.notify();
+      }
+    } catch (err) {
+      console.warn('MongoDB status check error:', err);
+    }
+  }
+
+  async fetchMongoDescription(productId) {
+    return await MongoService.getContentDescription(productId);
+  }
+
+  async saveMongoDescription(productId, descriptionData) {
+    const res = await MongoService.saveContentDescription(productId, descriptionData);
+    if (res && res.success) {
+      this.notifications.unshift({
+        id: Date.now(),
+        title: '🍃 MongoDB Content Saved',
+        text: `Content description for ${productId} updated in MongoDB (${res.source})`,
+        time: 'Just now',
+        read: false
+      });
+      this.notify();
+    }
+    return res;
+  }
+
+  async fetchMongoUpdates(productId = null) {
+    return await MongoService.getProductUpdates(productId);
+  }
+
+  async addMongoUpdate(updateData) {
+    const res = await MongoService.createProductUpdate(updateData);
+    if (res && res.success) {
+      this.notifications.unshift({
+        id: Date.now(),
+        title: '🍃 MongoDB Product Update Posted',
+        text: `Update "${updateData.title}" recorded in MongoDB (${res.source})`,
+        time: 'Just now',
+        read: false
+      });
+      this.notify();
+    }
+    return res;
+  }
+
+  async uploadProductImage(imageFileOrData) {
+    const res = await CloudinaryService.uploadImage(imageFileOrData);
+    if (res && res.success && res.url) {
+      this.notifications.unshift({
+        id: Date.now(),
+        title: '☁️ Cloudinary Upload Success',
+        text: `Image stored on Cloudinary: ${res.cloudinary ? 'Cloud CDN' : 'Local Fallback'}`,
+        time: 'Just now',
+        read: false
+      });
+      this.notify();
+    }
+    return res;
+  }
+
+  updateProductImage(productId, newImageUrl) {
+    const prod = this.products.find(p => p.id === productId);
+    if (prod) {
+      prod.image = newImageUrl;
+      localStorage.setItem('fancy_products', JSON.stringify(this.products));
+      this.notify();
+    }
   }
 
   addProduct(newProd) {

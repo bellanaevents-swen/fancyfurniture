@@ -1,5 +1,6 @@
 import { store } from './store.js';
 import { ARStudioController } from './arStudio.js';
+import { CloudinaryService } from './cloudinary.js';
 
 const LOGO_SVG_FALLBACK = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='32' fill='%23180c07'/><path d='M50 45 h100 v24 h-65 v28 h50 v24 h-50 v54 h-35 Z' fill='%23d97706'/><path d='M80 65 h80 v20 h-50 v20 h40 v20 h-40 v45 h-30 Z' fill='%23f59e0b' opacity='0.85'/><text x='100' y='180' text-anchor='middle' fill='%23f7eeea' font-family='Cinzel, serif' font-size='16' font-weight='bold' letter-spacing='2'>FANCY</text></svg>";
 
@@ -357,50 +358,96 @@ class AppController {
       </section>
 
       <div id="catalog-grid" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Controls Bar: Category Pills, Search, Sort -->
-        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-8 bg-white p-4 rounded-2xl border border-stone-200 shadow-sm w-full max-w-full min-w-0 overflow-hidden">
-          <!-- Category Pills -->
-          <div class="flex items-center gap-1.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none w-full lg:w-auto max-w-full min-w-0 flex-1">
-            ${categories.map(cat => {
-              const labelKey = cat === 'All' ? 'categoryAll' : 'category' + cat;
-              const isSel = store.selectedCategory === cat;
-              return `
-                <button data-cat="${cat}" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex-shrink-0 transition-all ${
-                  isSel 
-                    ? 'bg-amber-800 text-white shadow-sm'
-                    : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
-                }">
-                  ${t(labelKey) || cat}
-                </button>
-              `;
-            }).join('')}
+        <!-- Controls Bar: Category Pills with Left/Right Scroll, Search, Sort & Layout Toggle -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-8 bg-white dark:bg-stone-900 p-4 rounded-2xl border border-stone-200 dark:border-stone-800 shadow-sm w-full max-w-full min-w-0">
+          
+          <!-- Category Pills with Left/Right Scroll Controls -->
+          <div class="flex items-center gap-1.5 w-full lg:w-auto max-w-full min-w-0 flex-1 relative">
+            <button id="cat-scroll-left" class="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition-all shrink-0 shadow-xs" title="Scroll categories left">
+              ◀
+            </button>
+
+            <div id="category-pills-wrapper" class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 scrollbar-none scroll-smooth w-full max-w-full min-w-0 flex-1">
+              ${categories.map(cat => {
+                const labelKey = cat === 'All' ? 'categoryAll' : 'category' + cat;
+                const isSel = store.selectedCategory === cat;
+                return `
+                  <button data-cat="${cat}" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap flex-shrink-0 transition-all ${
+                    isSel 
+                      ? 'bg-amber-800 text-white shadow-sm'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  }">
+                    ${t(labelKey) || cat}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <button id="cat-scroll-right" class="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition-all shrink-0 shadow-xs" title="Scroll categories right">
+              ▶
+            </button>
           </div>
 
-          <!-- Search & Sort -->
-          <div class="flex items-center gap-3 w-full lg:w-auto max-w-full min-w-0 flex-shrink-0">
+          <!-- Search, Sort & Layout Controls -->
+          <div class="flex items-center gap-3 w-full lg:w-auto max-w-full min-w-0 flex-shrink-0 flex-wrap sm:flex-nowrap">
             <!-- Search -->
-            <div class="relative flex-1 lg:w-64 min-w-0">
+            <div class="relative flex-1 sm:w-56 min-w-0">
               <input 
                 id="search-input" 
                 type="text" 
                 placeholder="Search oak, chair, table..." 
                 value="${store.searchQuery}"
-                class="w-full bg-stone-100 border border-stone-200 rounded-xl px-3.5 py-2 pl-9 text-xs font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-700"
+                class="w-full bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3.5 py-2 pl-9 text-xs font-medium text-stone-800 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-700"
               />
               <span class="absolute left-3 top-2.5 text-stone-400 text-xs">🔍</span>
             </div>
 
             <!-- Sort -->
-            <select id="sort-select" class="bg-stone-100 border border-stone-200 rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 focus:outline-none cursor-pointer flex-shrink-0">
+            <select id="sort-select" class="bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl px-3 py-2 text-xs font-semibold text-stone-700 dark:text-stone-300 focus:outline-none cursor-pointer flex-shrink-0">
               <option value="featured" ${store.sortBy === 'featured' ? 'selected' : ''}>Featured</option>
               <option value="price-asc" ${store.sortBy === 'price-asc' ? 'selected' : ''}>Price: Low to High</option>
               <option value="price-desc" ${store.sortBy === 'price-desc' ? 'selected' : ''}>Price: High to Low</option>
               <option value="rating" ${store.sortBy === 'rating' ? 'selected' : ''}>Highest Rated</option>
             </select>
+
+            <!-- Layout View Switcher -->
+            <div class="flex items-center bg-stone-100 dark:bg-stone-800 p-1 rounded-xl border border-stone-200 dark:border-stone-700 shrink-0">
+              <button id="view-grid-btn" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${store.catalogLayout === 'grid' ? 'bg-amber-800 text-white shadow-xs' : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'}" title="Grid View">
+                <span>▦ Grid</span>
+              </button>
+              <button id="view-carousel-btn" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${store.catalogLayout === 'carousel' ? 'bg-amber-800 text-white shadow-xs' : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'}" title="Horizontal Scroll View">
+                <span>↔️ Scroll</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Product Cards Grid -->
+        <!-- Catalog Header & Left/Right Scroll Navigation Bar -->
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl font-serif font-bold text-stone-900 dark:text-stone-100">
+              ${store.selectedCategory === 'All' ? 'All Handcrafted Collections' : store.selectedCategory}
+            </h2>
+            <span class="text-xs font-semibold text-stone-500 bg-stone-100 dark:bg-stone-800 px-2.5 py-0.5 rounded-full">
+              ${products.length} items
+            </span>
+          </div>
+
+          <!-- Left / Right Scroll Action Buttons -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-stone-500 font-medium hidden sm:inline">Scroll Items:</span>
+            <button id="catalog-scroll-left" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-amber-50 dark:hover:bg-stone-700 text-amber-900 dark:text-amber-300 border border-stone-200 dark:border-stone-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1 active:scale-95" title="Scroll left">
+              <span>◀</span>
+              <span class="hidden sm:inline">Left</span>
+            </button>
+            <button id="catalog-scroll-right" class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-amber-50 dark:hover:bg-stone-700 text-amber-900 dark:text-amber-300 border border-stone-200 dark:border-stone-700 text-xs font-bold transition-all shadow-xs flex items-center gap-1 active:scale-95" title="Scroll right">
+              <span class="hidden sm:inline">Right</span>
+              <span>▶</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Product Cards Container (Grid or Horizontal Carousel) -->
         ${products.length === 0 ? `
           <div class="text-center py-20 bg-white rounded-2xl border border-stone-200 p-8">
             <div class="text-4xl mb-3">🪵</div>
@@ -408,17 +455,23 @@ class AppController {
             <p class="text-xs text-stone-500">Try clearing your search query or switching categories.</p>
           </div>
         ` : `
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div id="catalog-scroll-track" class="${
+            store.catalogLayout === 'carousel' 
+              ? 'flex overflow-x-auto gap-6 snap-x snap-mandatory scroll-smooth pb-6 pt-2 scrollbar-none w-full' 
+              : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
+          }">
             ${products.map(prod => {
               const name = prod.name[lang] || prod.name.en;
               const desc = prod.description[lang] || prod.description.en;
               const mat = prod.material ? (prod.material[lang] || prod.material.en) : '';
 
               return `
-                <div class="group bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div class="group bg-white dark:bg-stone-900 rounded-2xl border border-stone-200 dark:border-stone-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between ${
+                  store.catalogLayout === 'carousel' ? 'w-80 sm:w-96 shrink-0 snap-start' : ''
+                }">
                   <div>
                     <!-- Image container -->
-                    <div class="relative aspect-[4/3] bg-stone-100 overflow-hidden cursor-pointer open-prod-modal" data-prod-id="${prod.id}">
+                    <div class="relative aspect-[4/3] bg-stone-100 dark:bg-stone-800 overflow-hidden cursor-pointer open-prod-modal" data-prod-id="${prod.id}">
                       <img src="${prod.image}" alt="${name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80';" />
                       
                       <div class="absolute top-3 left-3 flex flex-col gap-1">
@@ -441,14 +494,14 @@ class AppController {
 
                     <!-- Details -->
                     <div class="p-5">
-                      <h3 class="font-serif font-bold text-lg text-stone-900 group-hover:text-amber-800 transition-colors cursor-pointer open-prod-modal" data-prod-id="${prod.id}">
+                      <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100 group-hover:text-amber-800 dark:group-hover:text-amber-400 transition-colors cursor-pointer open-prod-modal" data-prod-id="${prod.id}">
                         ${name}
                       </h3>
-                      <p class="text-xs text-stone-600 mt-1 line-clamp-2 leading-relaxed">
+                      <p class="text-xs text-stone-600 dark:text-stone-300 mt-1 line-clamp-2 leading-relaxed">
                         ${desc}
                       </p>
 
-                      <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs text-stone-600">
+                      <div class="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs text-stone-600 dark:text-stone-400">
                         <span>🪵 ${mat}</span>
                         <span>📏 ${prod.dimensions}</span>
                       </div>
@@ -459,7 +512,7 @@ class AppController {
                   <div class="p-5 pt-0 flex items-center justify-between gap-3">
                     <div>
                       <span class="text-xs text-stone-400 uppercase block font-semibold">Price</span>
-                      <span class="text-xl font-bold font-serif text-amber-800">${prod.priceRON} RON</span>
+                      <span class="text-xl font-bold font-serif text-amber-800 dark:text-amber-400">${prod.priceRON} RON</span>
                     </div>
 
                     <button data-add-prod-id="${prod.id}" class="add-to-cart-btn px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-amber-900/20 active:scale-95 transition-all">
@@ -474,6 +527,56 @@ class AppController {
         `}
       </div>
     `;
+
+    // Attach category pills scroll events
+    const catWrapper = container.querySelector('#category-pills-wrapper');
+    const catScrollLeft = container.querySelector('#cat-scroll-left');
+    const catScrollRight = container.querySelector('#cat-scroll-right');
+    if (catScrollLeft && catWrapper) {
+      catScrollLeft.onclick = () => catWrapper.scrollBy({ left: -220, behavior: 'smooth' });
+    }
+    if (catScrollRight && catWrapper) {
+      catScrollRight.onclick = () => catWrapper.scrollBy({ left: 220, behavior: 'smooth' });
+    }
+
+    // Attach layout view toggle events
+    const viewGridBtn = container.querySelector('#view-grid-btn');
+    const viewCarouselBtn = container.querySelector('#view-carousel-btn');
+    if (viewGridBtn) viewGridBtn.onclick = () => store.setCatalogLayout('grid');
+    if (viewCarouselBtn) viewCarouselBtn.onclick = () => store.setCatalogLayout('carousel');
+
+    // Attach catalog items left/right scroll events
+    const catalogTrack = container.querySelector('#catalog-scroll-track');
+    const catalogScrollLeft = container.querySelector('#catalog-scroll-left');
+    const catalogScrollRight = container.querySelector('#catalog-scroll-right');
+
+    if (catalogScrollLeft && catalogTrack) {
+      catalogScrollLeft.onclick = () => {
+        if (store.catalogLayout === 'grid') {
+          store.setCatalogLayout('carousel');
+          setTimeout(() => {
+            const track = container.querySelector('#catalog-scroll-track');
+            if (track) track.scrollBy({ left: -360, behavior: 'smooth' });
+          }, 50);
+        } else {
+          catalogTrack.scrollBy({ left: -360, behavior: 'smooth' });
+        }
+      };
+    }
+
+    if (catalogScrollRight && catalogTrack) {
+      catalogScrollRight.onclick = () => {
+        if (store.catalogLayout === 'grid') {
+          store.setCatalogLayout('carousel');
+          setTimeout(() => {
+            const track = container.querySelector('#catalog-scroll-track');
+            if (track) track.scrollBy({ left: 360, behavior: 'smooth' });
+          }, 50);
+        } else {
+          catalogTrack.scrollBy({ left: 360, behavior: 'smooth' });
+        }
+      };
+    }
 
     // Attach catalog events
     container.querySelectorAll('.cat-pill').forEach(btn => {
@@ -890,8 +993,52 @@ class AppController {
       return;
     }
 
+    const isCloudinaryActive = store.cloudinaryConfig && store.cloudinaryConfig.configured;
+    const isMongoConnected = store.mongoStatus && store.mongoStatus.connected;
+    const sampleAssets = CloudinaryService.getSampleCloudinaryAssets();
+
     container.innerHTML = `
-      <div class="max-w-3xl mx-auto p-4 sm:p-6">
+      <div class="max-w-3xl mx-auto p-4 sm:p-6 space-y-6">
+        <!-- Storage Systems Banners Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Cloudinary Status Banner -->
+          <div class="p-4 rounded-2xl ${isCloudinaryActive ? 'bg-emerald-950/20 border-emerald-800/40 text-emerald-200' : 'bg-amber-950/20 border-amber-800/40 text-amber-200'} border flex items-center justify-between gap-3 shadow-md">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ${isCloudinaryActive ? 'bg-emerald-800 text-white' : 'bg-amber-800 text-amber-100'} flex items-center justify-center text-xl font-bold shrink-0">
+                ☁️
+              </div>
+              <div>
+                <div class="font-bold text-xs flex items-center gap-1.5">
+                  <span>Cloudinary Storage</span>
+                  <span class="${isCloudinaryActive ? 'bg-emerald-800 text-emerald-100' : 'bg-amber-800 text-amber-100'} px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase">
+                    ${isCloudinaryActive ? 'Active CDN' : 'Ready'}
+                  </span>
+                </div>
+                <p class="text-[10px] text-stone-400 mt-0.5">Media CDN for furniture photos</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- MongoDB Status Banner -->
+          <div class="p-4 rounded-2xl ${isMongoConnected ? 'bg-emerald-950/20 border-emerald-800/40 text-emerald-200' : 'bg-emerald-950/10 border-emerald-800/30 text-emerald-300'} border flex items-center justify-between gap-3 shadow-md">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-xl font-bold shrink-0">
+                🍃
+              </div>
+              <div>
+                <div class="font-bold text-xs flex items-center gap-1.5">
+                  <span>MongoDB Database</span>
+                  <span class="${isMongoConnected ? 'bg-emerald-800 text-emerald-100' : 'bg-stone-700 text-stone-200'} px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase">
+                    ${isMongoConnected ? 'Connected' : 'Active Store'}
+                  </span>
+                </div>
+                <p class="text-[10px] text-stone-400 mt-0.5">Content descriptions & updates</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add New Product Card -->
         <div class="bg-white dark:bg-stone-900 p-6 sm:p-8 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-lg">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-stone-100 dark:border-stone-800">
             <div class="flex items-center gap-3">
@@ -946,12 +1093,17 @@ class AppController {
               </div>
             </div>
 
-            <!-- Product Image Section (Upload from local computer or enter URL) -->
-            <div class="space-y-2 p-4 rounded-2xl bg-stone-50/80 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-800">
-              <label class="block text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-                <span>📷</span>
-                <span>${t('uploadLocalImageLabel')}</span>
-              </label>
+            <!-- Product Image Section (Cloudinary Upload Zone) -->
+            <div class="space-y-3 p-4 rounded-2xl bg-stone-50/80 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-800">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
+                  <span>☁️</span>
+                  <span>Cloudinary Image Upload</span>
+                </label>
+                <span id="upload-status-tag" class="text-[10px] font-mono font-bold text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">
+                  Ready to upload
+                </span>
+              </div>
 
               <!-- Drag & Drop Zone -->
               <div id="admin-dropzone" class="relative border-2 border-dashed border-stone-300 dark:border-stone-700 hover:border-amber-600 dark:hover:border-amber-500 bg-white dark:bg-stone-900 rounded-2xl p-4 transition-all text-center cursor-pointer group shadow-xs">
@@ -963,22 +1115,28 @@ class AppController {
                   </div>
                   <div>
                     <p class="text-xs font-bold text-stone-800 dark:text-stone-200">
-                      ${t('dragDropHint')}
+                      Drop product photo here or click to upload to Cloudinary
                     </p>
                     <p class="text-[10px] text-stone-600 dark:text-stone-300 mt-0.5 font-medium">
-                      ${t('supportedFormatsHint')}
+                      Images automatically store on Cloudinary CDN
                     </p>
                   </div>
+                </div>
+
+                <!-- Uploading Progress Indicator -->
+                <div id="admin-dropzone-loading" class="hidden flex flex-col items-center justify-center py-4 space-y-2">
+                  <div class="w-8 h-8 border-4 border-amber-700 border-t-transparent rounded-full animate-spin"></div>
+                  <p class="text-xs font-bold text-amber-800 dark:text-amber-300 animate-pulse">Uploading to Cloudinary CDN...</p>
                 </div>
 
                 <!-- Preview Box -->
                 <div id="admin-dropzone-preview" class="hidden flex items-center gap-3 text-left p-2 bg-stone-50 dark:bg-stone-800 rounded-xl border border-stone-200 dark:border-stone-700">
                   <img id="admin-preview-img" src="" alt="Product Preview" class="w-16 h-16 object-cover rounded-lg border border-stone-300 dark:border-stone-600 shrink-0 bg-stone-200" />
                   <div class="flex-1 min-w-0">
-                    <p id="admin-preview-filename" class="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">Image Loaded</p>
+                    <p id="admin-preview-filename" class="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">Image Stored</p>
                     <p id="admin-preview-status" class="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
                       <span>✓</span>
-                      <span>${t('uploadedSuccess')}</span>
+                      <span id="status-text">Cloudinary URL Generated</span>
                     </p>
                   </div>
                   <button type="button" id="admin-remove-img-btn" class="px-3 py-1.5 text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition-colors border border-rose-200 dark:border-rose-900 shrink-0">
@@ -987,12 +1145,25 @@ class AppController {
                 </div>
               </div>
 
-              <!-- Fallback / Edit Image URL -->
+              <!-- Quick Cloudinary Sample Assets Picker -->
+              <div class="pt-2 border-t border-stone-200/60 dark:border-stone-800">
+                <span class="text-[11px] font-bold text-stone-700 dark:text-stone-300 block mb-2">⚡ Or select a Cloudinary sample asset:</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  ${sampleAssets.map((asset, i) => `
+                    <button type="button" data-asset-url="${asset.url}" class="sample-cloudinary-btn p-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:border-amber-600 text-left transition-all flex items-center gap-2 group">
+                      <img src="${asset.url}" class="w-8 h-8 rounded-lg object-cover bg-stone-200 shrink-0" />
+                      <span class="text-[10px] font-semibold text-stone-800 dark:text-stone-200 truncate group-hover:text-amber-800">${asset.name.split(' ')[0]}</span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Cloudinary Target Image URL Input -->
               <div class="pt-1">
                 <label class="block text-[11px] font-semibold text-stone-600 dark:text-stone-300 mb-1">
-                  ${t('orEnterUrl')}
+                  Active Cloudinary Image URL
                 </label>
-                <input required type="text" name="image" id="admin-image-url" value="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-700" />
+                <input required type="text" name="image" id="admin-image-url" value="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-800 text-xs font-mono font-medium focus:outline-none focus:ring-2 focus:ring-amber-700" />
               </div>
             </div>
 
@@ -1007,8 +1178,118 @@ class AppController {
               </div>
             </div>
 
-            <button type="submit" class="w-full py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-semibold text-sm shadow-md transition-all">
-              ${t('adminBtn')}
+            <button type="submit" class="w-full py-3.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+              <span>🚀</span>
+              <span>${t('adminBtn')}</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- MongoDB Content Descriptions & Product Updates Card -->
+        <div class="bg-white dark:bg-stone-900 p-6 sm:p-8 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-lg space-y-6">
+          <div class="flex items-center justify-between gap-3 pb-4 border-b border-stone-100 dark:border-stone-800">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-xl font-bold">🍃</div>
+              <div>
+                <h2 class="text-xl font-serif font-bold text-stone-900 dark:text-stone-100">MongoDB Content Descriptions & Updates Manager</h2>
+                <p class="text-xs text-stone-500">Edit rich stories, care guides, and publish product changelogs to MongoDB</p>
+              </div>
+            </div>
+            <span class="${isMongoConnected ? 'bg-emerald-800 text-emerald-100' : 'bg-stone-700 text-stone-200'} px-3 py-1 rounded-full text-[11px] font-mono font-bold">
+              ${isMongoConnected ? 'MongoDB Cloud Active' : 'Active In-Memory Store'}
+            </span>
+          </div>
+
+          <!-- MongoDB Content Description Editor -->
+          <form id="mongo-desc-form" class="space-y-4 p-5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 flex items-center gap-1.5">
+              <span>📖</span>
+              <span>Product Rich Description & Care Guide (MongoDB)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Target Product</label>
+                <select id="mongo-target-prod" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium">
+                  ${store.products.map(p => `<option value="${p.id}">${p.name.en || p.name.ro} (${p.id})</option>`).join('')}
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Craftsmanship Origin</label>
+                <input type="text" id="mongo-origin" value="Transylvania, Romania" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Full Story & Heritage Notes</label>
+              <textarea id="mongo-full-story" rows="3" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" placeholder="Describe wood sourcing, hand finish techniques, artisan history...">Every single joint and grain line is meticulously finished by experienced woodcraft artisans. Sourced from FSC-certified sustainable timber reserves in the Transylvanian foothills.</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Care & Maintenance Instructions</label>
+                <input type="text" id="mongo-care" value="Wipe with soft lint-free cloth. Apply natural organic beeswax polish bi-annually." class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Designer Notes</label>
+                <input type="text" id="mongo-designer-notes" value="Seamlessly pairs traditional joinery with clean contemporary lines." class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+            </div>
+
+            <button type="submit" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2">
+              <span>💾</span>
+              <span>Save Description to MongoDB</span>
+            </button>
+          </form>
+
+          <!-- MongoDB Product Update / Changelog Form -->
+          <form id="mongo-update-form" class="space-y-4 p-5 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 flex items-center gap-1.5">
+              <span>📢</span>
+              <span>Publish Product Update & Changelog (MongoDB)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Target Product</label>
+                <select id="mongo-up-prod" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium">
+                  <option value="all">Global / All Products</option>
+                  ${store.products.map(p => `<option value="${p.id}">${p.name.en || p.name.ro}</option>`).join('')}
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Update Type</label>
+                <select id="mongo-up-type" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium">
+                  <option value="restock">Restock Complete</option>
+                  <option value="new_finish">New Finish / Option</option>
+                  <option value="craftsmanship_note">Craftsmanship Note</option>
+                  <option value="price_change">Special Pricing</option>
+                  <option value="general">General Announcement</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Author Name</label>
+                <input type="text" id="mongo-up-author" value="Master Artisan Vasile" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Headline Title</label>
+                <input required type="text" id="mongo-up-title" placeholder="e.g. New Organic Beeswax Finish Available" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Badge Label</label>
+                <input type="text" id="mongo-up-badge" value="New Feature" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">Update Details</label>
+              <textarea required id="mongo-up-details" rows="2" class="w-full p-2.5 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-xs font-medium" placeholder="Describe the craftsman update, stock restock, or materials refinement..."></textarea>
+            </div>
+
+            <button type="submit" class="px-5 py-2.5 bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2">
+              <span>🚀</span>
+              <span>Publish Update to MongoDB</span>
             </button>
           </form>
         </div>
@@ -1020,24 +1301,49 @@ class AppController {
       const dropzone = container.querySelector('#admin-dropzone');
       const fileInput = container.querySelector('#admin-file-input');
       const dropzoneEmpty = container.querySelector('#admin-dropzone-empty');
+      const dropzoneLoading = container.querySelector('#admin-dropzone-loading');
       const dropzonePreview = container.querySelector('#admin-dropzone-preview');
       const previewImg = container.querySelector('#admin-preview-img');
       const previewFilename = container.querySelector('#admin-preview-filename');
+      const statusText = container.querySelector('#status-text');
+      const statusTag = container.querySelector('#upload-status-tag');
       const urlInput = container.querySelector('#admin-image-url');
       const removeBtn = container.querySelector('#admin-remove-img-btn');
 
-      const handleFile = (file) => {
+      const uploadAndSetFile = async (file) => {
         if (!file || !file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const dataUrl = e.target.result;
-          if (urlInput) urlInput.value = dataUrl;
-          if (previewImg) previewImg.src = dataUrl;
-          if (previewFilename) previewFilename.textContent = file.name + ` (${(file.size / 1024).toFixed(1)} KB)`;
-          if (dropzoneEmpty) dropzoneEmpty.classList.add('hidden');
+
+        if (dropzoneEmpty) dropzoneEmpty.classList.add('hidden');
+        if (dropzonePreview) dropzonePreview.classList.add('hidden');
+        if (dropzoneLoading) dropzoneLoading.classList.remove('hidden');
+        if (statusTag) {
+          statusTag.textContent = 'Uploading to Cloudinary...';
+          statusTag.className = 'text-[10px] font-mono font-bold text-amber-800 bg-amber-200 px-2 py-0.5 rounded-md animate-pulse';
+        }
+
+        const res = await store.uploadProductImage(file);
+
+        if (dropzoneLoading) dropzoneLoading.classList.add('hidden');
+
+        if (res && res.success && res.url) {
+          const cloudUrl = res.url;
+          if (urlInput) urlInput.value = cloudUrl;
+          if (previewImg) previewImg.src = cloudUrl;
+          if (previewFilename) previewFilename.textContent = file.name;
+          if (statusText) statusText.textContent = res.cloudinary ? 'Cloudinary CDN Active' : 'Uploaded (Local Mode)';
+          if (statusTag) {
+            statusTag.textContent = res.cloudinary ? '☁️ Cloudinary CDN Stored' : '✓ Image Uploaded';
+            statusTag.className = 'text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md';
+          }
           if (dropzonePreview) dropzonePreview.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
+        } else {
+          alert('Upload error: ' + (res?.error || 'Failed to upload to Cloudinary'));
+          if (dropzoneEmpty) dropzoneEmpty.classList.remove('hidden');
+          if (statusTag) {
+            statusTag.textContent = 'Upload Failed';
+            statusTag.className = 'text-[10px] font-mono font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded-md';
+          }
+        }
       };
 
       if (dropzone && fileInput) {
@@ -1048,7 +1354,7 @@ class AppController {
 
         fileInput.onchange = () => {
           if (fileInput.files && fileInput.files[0]) {
-            handleFile(fileInput.files[0]);
+            uploadAndSetFile(fileInput.files[0]);
           }
         };
 
@@ -1066,10 +1372,27 @@ class AppController {
           e.preventDefault();
           dropzone.classList.remove('border-amber-600', 'bg-amber-50/50', 'dark:bg-amber-950/30');
           if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
-            handleFile(e.dataTransfer.files[0]);
+            uploadAndSetFile(e.dataTransfer.files[0]);
           }
         };
       }
+
+      // Sample asset click handler
+      container.querySelectorAll('.sample-cloudinary-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          const sampleUrl = e.currentTarget.dataset.assetUrl;
+          if (urlInput) urlInput.value = sampleUrl;
+          if (previewImg) previewImg.src = sampleUrl;
+          if (previewFilename) previewFilename.textContent = 'Cloudinary Sample Asset';
+          if (statusText) statusText.textContent = 'Cloudinary Sample Loaded';
+          if (statusTag) {
+            statusTag.textContent = '☁️ Cloudinary Sample Selected';
+            statusTag.className = 'text-[10px] font-mono font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md';
+          }
+          if (dropzoneEmpty) dropzoneEmpty.classList.add('hidden');
+          if (dropzonePreview) dropzonePreview.classList.remove('hidden');
+        };
+      });
 
       if (removeBtn) {
         removeBtn.onclick = (e) => {
@@ -1079,6 +1402,10 @@ class AppController {
           if (previewImg) previewImg.src = '';
           if (dropzonePreview) dropzonePreview.classList.add('hidden');
           if (dropzoneEmpty) dropzoneEmpty.classList.remove('hidden');
+          if (statusTag) {
+            statusTag.textContent = 'Ready to upload';
+            statusTag.className = 'text-[10px] font-mono font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md';
+          }
         };
       }
 
@@ -1087,7 +1414,7 @@ class AppController {
           const val = urlInput.value.trim();
           if (val && (val.startsWith('http') || val.startsWith('data:image'))) {
             if (previewImg) previewImg.src = val;
-            if (previewFilename) previewFilename.textContent = "Custom Image URL";
+            if (previewFilename) previewFilename.textContent = val.includes('cloudinary.com') ? 'Cloudinary CDN Asset' : 'Custom Image URL';
             if (dropzoneEmpty) dropzoneEmpty.classList.add('hidden');
             if (dropzonePreview) dropzonePreview.classList.remove('hidden');
           }
@@ -1130,6 +1457,65 @@ class AppController {
         store.addProduct(newProd);
         alert(store.t('adminSuccess'));
         store.setActiveTab('catalog');
+      };
+    }
+
+    // MongoDB Content Description form submit handler
+    const mongoDescForm = container.querySelector('#mongo-desc-form');
+    if (mongoDescForm) {
+      mongoDescForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const targetProd = container.querySelector('#mongo-target-prod').value;
+        const origin = container.querySelector('#mongo-origin').value;
+        const fullStory = container.querySelector('#mongo-full-story').value;
+        const care = container.querySelector('#mongo-care').value;
+        const designerNotes = container.querySelector('#mongo-designer-notes').value;
+
+        const res = await store.saveMongoDescription(targetProd, {
+          craftsmanshipOrigin: origin,
+          fullStory,
+          careInstructions: care,
+          designerNotes,
+          updatedAt: new Date().toISOString()
+        });
+
+        alert(res.success ? `🍃 Description saved to MongoDB for ${targetProd} (${res.source})` : `Failed: ${res.error}`);
+      };
+    }
+
+    // MongoDB Product Update form submit handler
+    const mongoUpForm = container.querySelector('#mongo-update-form');
+    if (mongoUpForm) {
+      mongoUpForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const targetProd = container.querySelector('#mongo-up-prod').value;
+        const updateType = container.querySelector('#mongo-up-type').value;
+        const author = container.querySelector('#mongo-up-author').value;
+        const title = container.querySelector('#mongo-up-title').value;
+        const badge = container.querySelector('#mongo-up-badge').value;
+        const details = container.querySelector('#mongo-up-details').value;
+
+        const prod = store.products.find(p => p.id === targetProd);
+        const productName = prod ? (prod.name.en || prod.name.ro) : 'All Products';
+
+        const res = await store.addMongoUpdate({
+          productId: targetProd,
+          productName,
+          updateType,
+          author,
+          title,
+          badge,
+          details,
+          createdAt: new Date().toISOString()
+        });
+
+        if (res.success) {
+          alert(`📢 Update published to MongoDB! (${res.source})`);
+          container.querySelector('#mongo-up-title').value = '';
+          container.querySelector('#mongo-up-details').value = '';
+        } else {
+          alert(`Failed to publish update: ${res.error}`);
+        }
       };
     }
   }
@@ -1338,6 +1724,9 @@ class AppController {
                 <div><strong class="text-stone-700 dark:text-stone-300">${t('dimensionsText')}:</strong> ${prod.dimensions}</div>
                 <div><strong class="text-stone-700 dark:text-stone-300">${t('stockText')}:</strong> <span class="text-green-600 font-semibold">${t('warehouseStock', { stock: prod.stock })}</span></div>
               </div>
+
+              <!-- MongoDB Rich Content & Updates Container -->
+              <div id="mongo-detail-container"></div>
             </div>
 
             <div class="flex items-center gap-3">
@@ -1412,6 +1801,76 @@ class AppController {
         alert('Thank you for your review!');
       };
     }
+
+    // Async load MongoDB Content Description & Updates for this product
+    Promise.all([
+      store.fetchMongoDescription(prod.id),
+      store.fetchMongoUpdates(prod.id)
+    ]).then(([descRes, updatesRes]) => {
+      const mongoContainer = modal.querySelector('#mongo-detail-container');
+      if (!mongoContainer) return;
+
+      const descDoc = descRes && descRes.success ? descRes.data : null;
+      const updates = updatesRes && updatesRes.success && Array.isArray(updatesRes.data) ? updatesRes.data : [];
+
+      if (descDoc || updates.length > 0) {
+        let html = `
+          <div class="mt-4 p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/40 space-y-3 mb-4">
+            <div class="flex items-center justify-between text-xs font-bold text-emerald-900 dark:text-emerald-300">
+              <span class="flex items-center gap-1.5">🍃 <span>MongoDB Craftsmanship & Updates</span></span>
+              <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-200/70 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 font-semibold uppercase">MongoDB Engine</span>
+            </div>
+        `;
+
+        if (descDoc) {
+          if (descDoc.craftsmanshipOrigin) {
+            html += `<div class="text-xs text-stone-700 dark:text-stone-300"><strong>📍 Origin:</strong> ${descDoc.craftsmanshipOrigin}</div>`;
+          }
+          if (descDoc.fullStory) {
+            html += `
+              <div class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+                <strong class="text-stone-900 dark:text-stone-100 block mb-0.5">🏰 Heritage & Story:</strong>
+                ${descDoc.fullStory}
+              </div>
+            `;
+          }
+          if (descDoc.careInstructions) {
+            html += `<div class="text-xs text-stone-600 dark:text-stone-400"><strong>✨ Care Guide:</strong> ${descDoc.careInstructions}</div>`;
+          }
+          if (descDoc.designerNotes) {
+            html += `<div class="text-xs text-stone-600 dark:text-stone-400"><strong>✏️ Designer Note:</strong> ${descDoc.designerNotes}</div>`;
+          }
+        }
+
+        if (updates.length > 0) {
+          html += `
+            <div class="pt-2 border-t border-emerald-200/60 dark:border-emerald-800/40">
+              <strong class="text-xs text-stone-900 dark:text-stone-100 block mb-2">📢 Workshop Updates Changelog:</strong>
+              <div class="space-y-2">
+                ${updates.map(u => `
+                  <div class="p-2.5 rounded-xl bg-white/90 dark:bg-stone-800/90 border border-emerald-100 dark:border-stone-700 text-xs">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                      <span class="font-bold text-stone-900 dark:text-stone-100">${u.title}</span>
+                      <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 uppercase">${u.badge || u.updateType}</span>
+                    </div>
+                    <p class="text-[11px] text-stone-600 dark:text-stone-300">${u.details}</p>
+                    <div class="mt-1 text-[9px] text-stone-400 flex items-center justify-between">
+                      <span>By ${u.author || 'Artisan Workshop'}</span>
+                      <span>${new Date(u.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        html += `</div>`;
+        mongoContainer.innerHTML = html;
+      }
+    }).catch(err => {
+      console.warn('MongoDB detail fetch error:', err);
+    });
   }
 
   renderCartDrawer(container) {

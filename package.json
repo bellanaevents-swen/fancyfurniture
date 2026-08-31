@@ -5,17 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.js",
-    "build": "vite build && esbuild server.js --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
-    "start": "node dist/server.cjs",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "build": "vite build",
+    "start": "node server.js",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
     "gh-pages": "^6.1.1",
     "tsx": "^4.23.13",
-    "vite": "^5.4.21"
+    "vite": "^8.2.2"
   },
   "dependencies": {
     "cloudinary": "^2.11.0",

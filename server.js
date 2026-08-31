@@ -387,12 +387,13 @@ if (!process.env.VERCEL) {
   start();
 }
 
-module.exports = app;
+// server.js
+// ... your routes and middleware ...
 
-// Keep app.listen only for local development
+export default app;
+
+// Only start the port server locally
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running locally on port ${PORT}`);
-  });
+  app.listen(PORT, () => console.log(`Running locally on port ${PORT}`));
 }

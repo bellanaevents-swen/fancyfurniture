@@ -61,7 +61,7 @@ class AppController {
           <!-- Logo -->
           <div id="nav-logo" role="button" tabindex="0" class="flex items-center gap-2.5 sm:gap-3 text-left focus:outline-none group flex-shrink-0 cursor-pointer">
             <div id="open-logo-modal-btn" title="Click to view luxury logo details" class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-md shadow-amber-900/25 group-hover:scale-105 transition-all ring-2 ring-amber-700/50 bg-stone-950 flex items-center justify-center">
-              <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='images/logo.jpg';" />
+              <img src="./images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='images/logo.jpg';" />
               <div class="absolute inset-0 bg-gradient-to-tr from-amber-900/20 via-transparent to-amber-400/20 pointer-events-none"></div>
             </div>
             <div>
@@ -252,7 +252,7 @@ class AppController {
           <div>
             <div class="flex items-center gap-3 mb-2">
               <div id="footer-logo-btn" title="Click to view luxury logo details" class="w-8 h-8 rounded-lg overflow-hidden ring-1 ring-amber-700/50 bg-stone-950 flex-shrink-0 cursor-pointer hover:ring-amber-500 transition-all">
-                <img src="images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='images/logo.jpg';" />
+                <img src="./images/fancy_logo_1785839799811.jpg" alt="Fancy Furniture Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='images/logo.jpg';" />
               </div>
               <div class="font-serif font-bold text-xl text-white">Fancy Furniture</div>
             </div>

@@ -355,45 +355,33 @@ app.post('/api/mongodb/site-content', async (req, res) => {
   res.json({ success: true, source: 'memory_fallback', content: memorySiteContent });
 });
 
-async function start() {
-  // Try connecting to MongoDB asynchronously if configured
-  connectMongoDB().catch(err => console.warn('MongoDB initial connection attempt:', err.message));
+// Local dev vs. Production setup
 
-  // Serve static images folder
+async function startServer() {
+  // Attempt MongoDB connection
+  connectMongoDB().catch(err => console.warn('MongoDB connection attempt:', err.message));
+
+  // Serve local static images
   app.use('/images', express.static(path.join(process.cwd(), 'images')));
 
+  // In local development, attach Vite middleware for hot-reloading
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
-      server: { middlewareMode: true, host: '0.0.0.0', port: 3000 },
+      server: { middlewareMode: true, host: '0.0.0.0', port: PORT },
       appType: 'spa'
     });
     app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Fancy Furniture server running on http://0.0.0.0:${PORT}`);
+    console.log(`Fancy Furniture server running on http://localhost:${PORT}`);
   });
 }
 
-export default app;
-
+// Only start the local HTTP server when NOT running inside Vercel Serverless
 if (!process.env.VERCEL) {
-  start();
+  startServer();
 }
 
-// server.js
-// ... your routes and middleware ...
-
+// Single export default statement for Vercel functions
 export default app;
-
-// Only start the port server locally
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => console.log(`Running locally on port ${PORT}`));
-}
